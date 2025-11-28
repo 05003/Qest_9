@@ -15,7 +15,6 @@ public:
     void SetPlayerSecret(class AQest9PlayerController* PC, const TArray<int32>& Secret);
     void RequestToggleReady(class AQest9PlayerController* Requestor);
 
-    // Helper to get sorted index (0 or 1)
     static int32 GetSortedPlayerIndex(const APlayerController* PC, const UWorld* World);
 
 protected:

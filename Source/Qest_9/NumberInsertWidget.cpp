@@ -101,7 +101,6 @@ int32 UNumberInsertWidget::GetMyPlayerIndex()
     // 이 코드가 없으면 두 클라이언트 모두 Player 2로 잘못 인식됨
     if (!GS || GS->PlayerArray.Num() < 2)
         return -1;
-    // 1. IndexOfByPredicate: 여기는 포인터(TObjectPtr)로 들어옴 -> 화살표(->) 사용
     int32 Index = GS->PlayerArray.IndexOfByPredicate([this](const auto& PS)
         {
             return PS && GetOwningPlayer() && PS == GetOwningPlayer()->PlayerState;
@@ -110,15 +109,12 @@ int32 UNumberInsertWidget::GetMyPlayerIndex()
     {
         auto SortedPlayers = GS->PlayerArray;
 
-        // 2. Sort: 여기는 객체(Reference)로 들어옴 -> 점(.) 사용
         SortedPlayers.Sort([](const auto& A, const auto& B)
             {
-                // FIX [Build]: 'A && B' 제거, '->' 대신 '.' 사용
                 return A.GetPlayerId() < B.GetPlayerId();
             });
         for (int32 i = 0; i < SortedPlayers.Num(); ++i)
         {
-            // SortedPlayers[i]는 포인터이므로 '->' 사용 가능 (루프 내)
             if (SortedPlayers[i] == GetOwningPlayer()->PlayerState)
             {
                 CachedPlayerIndex = i;

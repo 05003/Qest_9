@@ -13,7 +13,6 @@ class QEST_9_API AQest9PlayerController : public APlayerController
 public:
     virtual void BeginPlay() override;
 
-    // [Security] Add WithValidation to verify input on server
     UFUNCTION(Server, Reliable, WithValidation)
     void Server_SetSecret(const TArray<int32>& Secret);
 

@@ -70,7 +70,6 @@ void AQest9GameMode::ProcessAttack(AQest9PlayerController* Attacker, const TArra
 
     if (TurnS == 3)
     {
-        // 1. 점수 올리기
         if (GS->CurrentAttackerIndex == 0) GS->P1Score++;
         else GS->P2Score++;
 
@@ -78,34 +77,27 @@ void AQest9GameMode::ProcessAttack(AQest9PlayerController* Attacker, const TArra
         GS->AccBalls = 0;
         PlayerSecrets.Empty();
 
-        // 2. 최종 승리 체크
         if (GS->P1Score >= 3 || GS->P2Score >= 3)
         {
             GS->CurrentPhase = EGamePhase::Finished;
 
-            // 핵심: 각 플레이어에게 개별적으로 판정 전달
             bool bP1Wins = (GS->P1Score > GS->P2Score);
             for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
             {
                 if (AQest9PlayerController* PC = Cast<AQest9PlayerController>(It->Get()))
                 {
-                    // 각 PC의 인덱스 구하기
                     int32 MyIdx = GetSortedPlayerIndex(PC, GetWorld());
                     if (MyIdx == -1) continue;
 
-                    // 내 관점에서 승리 여부 계산
                     bool bIWin = (MyIdx == 0) ? bP1Wins : !bP1Wins;
                     int32 MyScore = (MyIdx == 0) ? GS->P1Score : GS->P2Score;
                     int32 OppScore = (MyIdx == 0) ? GS->P2Score : GS->P1Score;
 
-                    // 각 플레이어에게 정확한 결과 전달
                     PC->Client_ShowGameResult(bIWin, MyScore, OppScore);
                 }
             }
             return;
         }
-
-        // 3. 아직 안 끝났으면 Setup으로
         GS->CurrentPhase = EGamePhase::Setup;
         return;
     }

@@ -12,7 +12,6 @@ public:
     {
         if (!Context) return TEXT("Invalid");
 
-        // [공식문서 참고] ENetMode 열거형 처리
         switch (Context->GetNetMode())
         {
         case NM_Client:          return TEXT("Client");
@@ -28,7 +27,6 @@ public:
     {
         if (!Context) return TEXT("Invalid");
 
-        // [공식문서 참고] ENetRole 열거형 처리
         switch (Context->GetLocalRole())
         {
         case ROLE_None:             return TEXT("None");
@@ -50,13 +48,13 @@ public:
         // 최종 출력 형태: [Client][AutonomousProxy] 메시지
         FString FinalLog = FString::Printf(TEXT("[%s][%s] %s"), *NetMode, *Role, *Message);
 
-        // 1. 화면 출력 (Dedicated Server가 아닐 때만)
+        // 화면 출력 (Dedicated Server가 아닐 때만)
         if (GEngine && Context->GetNetMode() != NM_DedicatedServer)
         {
             GEngine->AddOnScreenDebugMessage(-1, Time, Color, FinalLog);
         }
 
-        // 2. 로그 파일 출력 (항상 기록)
+        // 로그 파일 출력 (항상 기록)
         UE_LOG(LogTemp, Warning, TEXT("%s"), *FinalLog);
     }
 };

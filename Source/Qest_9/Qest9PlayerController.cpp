@@ -25,7 +25,6 @@ void AQest9PlayerController::Client_RestartGame_Implementation()
         MainWidget = nullptr;
     }
 
-    // MainWidgetClass가 유효한지 확인
     if (!MainWidgetClass)
     {
         UE_LOG(LogTemp, Error, TEXT("MainWidgetClass is nullptr! Cannot create widget."));
